@@ -16,13 +16,39 @@ request_headers = {
     }
 #get all players
 response=requests.get(url2, headers = request_headers)
-# print (response.text)
-#get player stats
-data = response.json()
-for player in data:
-    print(player)
-    if player == 'resultSets':
-        for result in player:
-            print(result)
 
-    print('\n')
+# def gatherPlayers():
+    #turn a lot of stuff into better stuff
+data = response.json()
+unfinishedRows = data['resultSets']
+finishedRows = unfinishedRows[0]
+rowSets = finishedRows['rowSet']
+
+players = []
+
+
+for people in rowSets:
+
+    players.append({
+        'playerId' : people[0],
+        'playerName' : people[2]
+    })
+# print (players)
+# return players
+
+# def getAllStats(players):
+url = 'http://stats.nba.com/stats/commonplayerinfo/?PlayerID='
+
+playerURL = url + '202325' #number for test
+finalURL = playerURL + url3
+response = requests.get(playerURL, headers = request_headers)
+# toPrint = response.json()
+print(response)
+
+
+def careerStats():
+    #use either 'Totals' or 'PerGame' for PerMode parameter
+    url2 = 'http://stats.nba.com/stats/playercareerstats/?PlayerID='
+    ulr3 = 'PerMode=Totals'
+
+'http://stats.nba.com/stats/playercareerstats/?PlayerID=202325&PerMode=Totals'
