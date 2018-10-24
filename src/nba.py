@@ -17,38 +17,51 @@ request_headers = {
 #get all players
 response=requests.get(url2, headers = request_headers)
 
-# def gatherPlayers():
+def gatherPlayers():
     #turn a lot of stuff into better stuff
-data = response.json()
-unfinishedRows = data['resultSets']
-finishedRows = unfinishedRows[0]
-rowSets = finishedRows['rowSet']
+    url2 = 'http://stats.nba.com/stats/commonallplayers/?LeagueID=00&Season=2017-18&IsOnlyCurrentSeason=1'
+    response=requests.get(url2, headers = request_headers)
+    data = response.json()
+    unfinishedRows = data['resultSets']
+    finishedRows = unfinishedRows[0]
+    rowSets = finishedRows['rowSet']
 
-players = []
-
-
-for people in rowSets:
-
-    players.append({
-        'playerId' : people[0],
-        'playerName' : people[2]
-    })
-# print (players)
-# return players
-
-# def getAllStats(players):
-url = 'http://stats.nba.com/stats/commonplayerinfo/?PlayerID='
-
-playerURL = url + '202325' #number for test
-finalURL = playerURL + url3
-response = requests.get(playerURL, headers = request_headers)
-# toPrint = response.json()
-print(response)
+    players = []
 
 
-def careerStats():
+    for people in rowSets:
+
+        players.append({
+            'playerId' : people[0],
+            'playerName' : people[2]
+        })
+    # print (players)
+    return players
+
+def getAllStats():
+    """gets all the stats for one player"""
+    url = 'http://stats.nba.com/stats/commonplayerinfo/?PlayerID='
+
+    playerURL = url + '202325' #number for test
+    response = requests.get(playerURL, headers = request_headers)
+    toPrint = response.json()
+    print(toPrint)
+
+
+def careerStats(input, players):
     #use either 'Totals' or 'PerGame' for PerMode parameter
     url2 = 'http://stats.nba.com/stats/playercareerstats/?PlayerID='
-    ulr3 = 'PerMode=Totals'
+    url3 = '&PerMode=Totals'
 
-'http://stats.nba.com/stats/playercareerstats/?PlayerID=202325&PerMode=Totals'
+    for player in players:
+        if input == player['playerName']:
+            playerNum = player['playerId']
+            finalURL = url2 + str(playerNum) + url3
+            response = requests.get(finalURL, headers = request_headers)
+            break
+    toPrint = response.json()
+    print(toPrint)
+
+    
+
+    # 'http://stats.nba.com/stats/playercareerstats/?PlayerID=202325&PerMode=Totals'
