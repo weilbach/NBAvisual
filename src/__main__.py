@@ -1,8 +1,10 @@
 from nba import careerStats, gatherPlayers, getAllStats
+import menu
 
 def main():
     
     # getAllStats()
+    menu()
 
     players = gatherPlayers()
     
